@@ -37,7 +37,7 @@ You will need [Microsoft .NET Framework 4.6.1](https://www.microsoft.com/en-us/d
 * A help file to try and cover off some of the pitfalls and caveats of the program (needs some work)
 * A simple memory reader to get player's co-ordinates from the client
 * A colour picker for LightData and LightIntBand
-* using Console Commands ex. load -f "C:\enUS\Achievement_Category.db2" -b 37474
+* Using Console Commands ex. load -f "C:\enUS\Achievement_Category.db2" -b 37474
 
 ### Tools:
 * Definition editor for maintaining the definitions
