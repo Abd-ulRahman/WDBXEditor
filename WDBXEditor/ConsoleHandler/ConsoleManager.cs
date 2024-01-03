@@ -53,11 +53,45 @@ namespace WDBXEditor.ConsoleHandler
                 return false;
             }
         }
+        public static string RunCommand(string arguments, bool readOutput)
+        {
+            var output = string.Empty;
+            try
+            {
+                var startInfo = new ProcessStartInfo
+                {
+                    Verb = "runas",
+                    FileName = "cmd.exe",
+                    Arguments = "/C " + arguments,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardInput = true,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = false
+                };
+
+                var proc = Process.Start(startInfo);
+
+                if (readOutput)
+                {
+                    output = proc.StandardOutput.ReadToEnd();
+                }
+
+                proc.WaitForExit(60000);
+
+                return output;
+            }
+            catch (Exception)
+            {
+                return output;
+            }
+        }
 
         public static void LoadCommandDefinitions()
         {
             //Argument commands
-            DefineCommand("-console", ConsoleManager.LoadConsoleMode);
+            DefineCommand("-console", LoadConsoleMode);
             DefineCommand("-export", ConsoleCommands.ExportArgCommand);
             DefineCommand("-sqldump", ConsoleCommands.SqlDumpArgCommand);
             DefineCommand("-extract", ConsoleCommands.ExtractCommand);
@@ -69,7 +103,7 @@ namespace WDBXEditor.ConsoleHandler
             DefineCommand("load", ConsoleCommands.LoadCommand);
             DefineCommand("help", ConsoleCommands.HelpCommand);
             DefineCommand("exit", delegate { Environment.Exit(0); });
-            DefineCommand("gui", ConsoleManager.LoadGUI);
+            DefineCommand("restart", Restart_Console);
         }
 
         public static void LoadConsoleMode(string[] args)
@@ -87,8 +121,8 @@ namespace WDBXEditor.ConsoleHandler
                     CommandHandlers.Remove(k);
         }
 
-        [ConsoleHelp("Loads the GUI version of the program", "", "")]
-        private static void LoadGUI(string[] args)
+        [ConsoleHelp("Restart the Console version of the program Typing any thing else than Existing Commands will start GUI", "", "")]
+        private static void Restart_Console(string[] args)
         {
             Process.Start(System.Windows.Forms.Application.ExecutablePath);
             Environment.Exit(0);
