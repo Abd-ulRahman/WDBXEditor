@@ -8,25 +8,27 @@ namespace WDBXEditor
 {
     class Program
     {
-        //static string[] _args = _args ?? new string[] { "-console" };
         public static bool PrimaryInstance = false;
         [STAThread]
         static void Main(string[] args)
         {
-            InstanceManager.InstanceCheck(args); //Check to see if we can run this instance
             SetDllDirectory(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), (Environment.Is64BitProcess ? "x64" : "x86")));
+
+            InstanceManager.InstanceCheck(args); //Check to see if we can run this instance
+            InstanceManager.LoadDll("StormLib.dll"); //Loads the correct StormLib library
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Console.WriteLine("Hello World!");
+            //Console.WriteLine("Hello World!");
             ConsoleManager.LoadConsoleMode(args);
-            for (; ; )
-            {
-                var input = Console.ReadLine();
-                args = input.Split(' ');
-                System.Console.WriteLine("Got " + input);
 
+            var input = Console.ReadLine();
+            args = input.Split(' ');
+            System.Console.WriteLine("Got " + input);
+
+            for (;;)
+            {
                 if (args != null && args.Length > 0)
                 {
                     ConsoleManager.LoadCommandDefinitions();
