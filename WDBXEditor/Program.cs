@@ -23,12 +23,11 @@ namespace WDBXEditor
             //Console.WriteLine("Hello World!");
             ConsoleManager.LoadConsoleMode(args);
 
-            var input = Console.ReadLine();
-            args = input.Split(' ');
-            System.Console.WriteLine("Got " + input);
-
             for (;;)
             {
+                var input = Console.ReadLine();
+                args = input.Split(' ');
+                System.Console.WriteLine("Got " + input);
                 if (args != null && args.Length > 0)
                 {
                     ConsoleManager.LoadCommandDefinitions();
