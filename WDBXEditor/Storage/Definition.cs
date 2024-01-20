@@ -167,6 +167,14 @@ namespace WDBXEditor.Storage
 					relation = field;
 					continue;
 				}
+		                else if (dbdfield.isRelation && dbdfield.name == "Ui_order")
+		                {
+		                    field.IsIndex = false;
+		                    relation = field.Clone() as Field;
+		                    relation.Relationship = true;
+		                    relation.Name = field.Name + " "; // append parents to the end
+		                    continue;
+		                }
 				else if (dbdfield.isRelation)
 				{
 					relation = field.Clone() as Field;
