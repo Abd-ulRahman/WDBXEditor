@@ -103,6 +103,9 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
+    <Reference Include="DBDefsLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DBDefsLib.1.0.0.18\lib\netstandard2.0\DBDefsLib.dll</HintPath>
+    </Reference>
     <Reference Include="K4os.Compression.LZ4, Version=1.3.7.0, Culture=neutral, PublicKeyToken=2186fa9121ef231d, processorArchitecture=MSIL">
       <HintPath>..\packages\K4os.Compression.LZ4.1.3.7-beta\lib\net462\K4os.Compression.LZ4.dll</HintPath>
     </Reference>
@@ -307,51 +310,67 @@
     <Compile Include="UpdateManager.cs" />
     <EmbeddedResource Include="About.resx">
       <DependentUpon>About.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Common\DropdownCheckList.resx">
       <DependentUpon>DropdownCheckList.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="EditDefinition.resx">
       <DependentUpon>EditDefinition.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ColourConverter.resx">
       <DependentUpon>ColourConverter.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ErrorReport.resx">
       <DependentUpon>ErrorReport.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FindReplace.resx">
       <DependentUpon>FindReplace.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LoadDefinition.resx">
       <DependentUpon>LoadDefinition.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LoadHotfix.resx">
       <DependentUpon>LoadHotfix.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PlayerLocation.resx">
       <DependentUpon>PlayerLocation.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TextEditor.resx">
       <DependentUpon>TextEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LegionParser.resx">
       <DependentUpon>LegionParser.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LoadCSV.resx">
       <DependentUpon>LoadCSV.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LoadMPQ.resx">
       <DependentUpon>LoadMPQ.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LoadSQL.resx">
       <DependentUpon>LoadSQL.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\WotLKItemFix.resx">
       <DependentUpon>WotLKItemFix.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -389,10 +408,9 @@
       <Name>AdvancedDataGridView</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\WoWDBDefs\code\C#\DBDefsLib\DBDefsLib.csproj">
-      <Project>{5b81cdac-339f-4ca9-b484-c38ae0c226dc}</Project>
-      <Name>DBDefsLib</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cmd.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\csv.png" />
@@ -482,6 +500,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Definitions\WotLK 3.3.5 %2812340%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Definitions\*.dbd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
