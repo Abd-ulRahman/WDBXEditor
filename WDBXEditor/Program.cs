@@ -26,10 +26,11 @@ namespace WDBXEditor
             for (;;)
             {
                 var input = Console.ReadLine();
-                args = input.Split(' ');
                 System.Console.WriteLine("Got " + input);
+
                 if (args != null && args.Length > 0)
                 {
+                    args = input.Split(' ');
                     ConsoleManager.LoadCommandDefinitions();
 
                     if (ConsoleManager.CommandHandlers.ContainsKey(args[0].ToLower()))
