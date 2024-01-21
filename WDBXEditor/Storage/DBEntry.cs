@@ -93,7 +93,7 @@ namespace WDBXEditor.Storage
 			foreach (var col in TableStructure.Fields)
 			{
 				Queue<TextWowEnum> languages = new Queue<TextWowEnum>(Enum.GetValues(typeof(TextWowEnum)).Cast<TextWowEnum>());
-				string[] columnsNames = col.ColumnNames.Split(',');
+				string[] columnsNames = col.ColumnNames.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
 				for (int i = 0; i < col.ArraySize; i++)
 				{
