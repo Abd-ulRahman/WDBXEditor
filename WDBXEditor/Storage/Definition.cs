@@ -98,7 +98,7 @@ namespace WDBXEditor.Storage
 				switch (size)
 				{
 					case 8:
-						return "byte";
+						return "sbyte";
 					case 16:
 						return "short";
 					case 32:
@@ -157,32 +157,22 @@ namespace WDBXEditor.Storage
 					field.IsIndex = true;
 					field.NonInline = dbdfield.isNonInline;
 				}
+				if (dbdfield.isRelation && dbdfield.name == "Ui_order")
+				{
+					field.IsIndex = false;
+                    field.Relationship = dbdfield.isRelation;
+                }
 
-				field.Name = formatFieldName(dbdfield.name);
+                field.Name = formatFieldName(dbdfield.name);
 				field.Type = DBDTypeToWDBXType(dbdef.columnDefinitions[dbdfield.name].type, dbdfield.size);
 
-				if (dbdfield.isNonInline && dbdfield.isRelation)
-				{
-					field.Relationship = true; // append relations to the end
-					relation = field;
-					continue;
-				}
-		                else if (dbdfield.isRelation && dbdfield.name == "Ui_order")
-		                {
-		                    field.IsIndex = false;
-		                    relation = field.Clone() as Field;
-		                    relation.Relationship = true;
-		                    relation.Name = field.Name + " "; // append parents to the end
-		                    continue;
-		                }
-				else if (dbdfield.isRelation)
-				{
-					relation = field.Clone() as Field;
-					relation.Relationship = true;
-					relation.Name = field.Name + "_RelationShip"; // append parents to the end
-				}
+                if (dbdfield.isNonInline && dbdfield.isRelation)
+                {
+                    field.Relationship = dbdfield.isRelation;
+                    field.NonInline = dbdfield.isNonInline;
+                }
 
-				table.Fields.Add(field);
+                table.Fields.Add(field);
 			}
 
 			// WDBX requires an ID column
