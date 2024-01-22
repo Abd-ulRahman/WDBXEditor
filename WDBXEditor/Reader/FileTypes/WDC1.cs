@@ -139,7 +139,7 @@ namespace WDBXEditor.Reader.FileTypes
 					RecordOffset = dbReader.ReadUInt16(),
 					Size = dbReader.ReadUInt16(),
 					AdditionalDataSize = dbReader.ReadUInt32(), // size of pallet / sparse values
-					CompressionType = (CompressionType)dbReader.Read(),
+					CompressionType = (CompressionType)dbReader.ReadUInt32(),
 					BitOffset = dbReader.ReadInt32(),
 					BitWidth = dbReader.ReadInt32(),
 					Cardinality = dbReader.ReadInt32()
@@ -380,8 +380,8 @@ namespace WDBXEditor.Reader.FileTypes
 				return;
 
 			Dictionary<TypeCode, int> typeLookup = new Dictionary<TypeCode, int>()
-			{
-				{ TypeCode.Byte, 1 },
+            {
+                { TypeCode.Byte, 1 },
 				{ TypeCode.SByte, 1 },
 				{ TypeCode.UInt16, 2 },
 				{ TypeCode.Int16, 2 },
@@ -392,10 +392,67 @@ namespace WDBXEditor.Reader.FileTypes
 				{ TypeCode.String, 4 },
 				{ TypeCode.Single, 4 }
 			};
-			columnSizes = entry.Data.Columns.Cast<DataColumn>().Select(x => typeLookup[Type.GetTypeCode(x.DataType)]).ToArray();
-		}
+			columnSizes = entry.Data.Columns.Cast<DataColumn>().Select(x => typeLookup[Type.GetTypeCode(x.DataType)]).ToArray(); // do7me OfType or Cast // OfType
+        }
 
-		public void AddRelationshipColumn(DBEntry entry)
+        public void SetColumnMinMaxValues(DBEntry entry)
+        {
+            MinMaxValues = new Dictionary<int, MinMax>();
+            int column = 0;
+            for (int i = 0; i < ColumnMeta.Count; i++)
+            {
+                // get the column type - skip strings
+                var type = entry.Data.Columns[column].DataType;
+                if (type == typeof(string))
+                {
+                    column += ColumnMeta[i].ArraySize;
+                    continue;
+                }
+
+                int bits = ColumnMeta[i].CompressionType == CompressionType.None ? FieldStructure[i].BitCount : ColumnMeta[i].BitWidth;
+                if ((bits & (bits - 1)) == 0 && bits >= 8) // power of two and >= sizeof(byte) means a standard type
+                {
+                    column += ColumnMeta[i].ArraySize;
+                    continue;
+                }
+
+                // calculate the min and max values
+                bool signed = Convert.ToBoolean(type.GetField("MinValue").GetValue(null));
+                bool isfloat = type == typeof(float);
+
+                //bool metaSigned = ColumnMeta[i].CompressionType == CompressionType.Immediate && (ColumnMeta[i].Cardinality & 1) == 1; // or omitted
+                //if (ColumnMeta[i].CompressionType == CompressionType.Immediate && metaSigned != signed && i != IdIndex && !isfloat)   // or omitted
+                //    throw new Exception($"Invalid sign for column {i}");                                                              // or omitted
+
+                object max = signed ? long.MaxValue >> (64 - bits) : (object)(ulong.MaxValue >> (64 - bits));
+                object min = signed ? long.MinValue >> (64 - bits) : 0;
+                if (isfloat)
+                {
+                    max = BitConverter.ToSingle(BitConverter.GetBytes((dynamic)max), 0);
+                    min = BitConverter.ToSingle(BitConverter.GetBytes((dynamic)min), 0);
+                }
+
+                for (int j = 0; j < ColumnMeta[i].ArraySize; j++)
+                {
+                    entry.Data.Columns[column].ExtendedProperties.Add("MaxValue", max);
+                    if (signed || isfloat)
+                        entry.Data.Columns[column].ExtendedProperties.Add("MinValue", min);
+
+                    MinMax minmax = new MinMax()
+                    {
+                        Signed = signed,
+                        MaxVal = max,
+                        MinVal = min,
+                        IsSingle = isfloat
+                    };
+
+                    MinMaxValues[column] = minmax;
+                    column++;
+                }
+            }
+        }
+
+        public void AddRelationshipColumn(DBEntry entry)
 		{
 			if (RelationShipData == null)
 				return;

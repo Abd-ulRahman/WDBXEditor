@@ -77,7 +77,7 @@ namespace WDBXEditor.Reader.FileTypes
 					RecordOffset = dbReader.ReadUInt16(),
 					Size = dbReader.ReadUInt16(),
 					AdditionalDataSize = dbReader.ReadUInt32(), // size of pallet / sparse values
-					CompressionType = (CompressionType)dbReader.Read(),
+					CompressionType = (CompressionType)dbReader.ReadUInt32(),
 					BitOffset = dbReader.ReadInt32(),
 					BitWidth = dbReader.ReadInt32(),
 					Cardinality = dbReader.ReadInt32()
