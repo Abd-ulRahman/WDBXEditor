@@ -16,7 +16,7 @@ namespace WDBXEditor.Reader
 
 		private CompressionType compressionType;
 		public CompressionType CompressionType
-        {
+		{
 			get { return compressionType; }
 			set
 			{
