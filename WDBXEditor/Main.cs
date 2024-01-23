@@ -65,20 +65,11 @@ namespace WDBXEditor
 			Parallel.ForEach(this.Controls.Cast<Control>(), c => c.KeyDown += new KeyEventHandler(KeyDownEvent));
 
             //Load definitions + Start FileWatcher
-            /*	Task.Run(Database.LoadDefinitions)
-                    .ContinueWith(x =>
-                    {
-                        // Check for Update, enable watcher after completion
-                        Task.Run(UpdateManager.CheckForUpdate).ContinueWith(y => Watcher(), TaskScheduler.FromCurrentSynchronizationContext());
-
-                        // Run preloaded files
-                        AutoRun();
-                    }, 
-                    TaskScheduler.FromCurrentSynchronizationContext());*/
-            Watcher();
-
             Database.LoadDefinitions();
             AutoRun();
+
+            //Add Watcher
+            Watcher();
 
             //Setup Single Instance Delegate
             InstanceManager.AutoRunAdded += delegate
