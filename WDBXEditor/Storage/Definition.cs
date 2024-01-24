@@ -152,7 +152,12 @@ namespace WDBXEditor.Storage
 					field.ArraySize = dbdfield.arrLength;
 				}
 
-				if (dbdfield.isID || dbdfield.name == "ID")
+
+				if (!dbdfield.isNonInline && (dbdfield.isID || dbdfield.name == "ID"))
+				{
+					field.IsIndex = true;
+				}
+				if (dbdfield.isNonInline && (dbdfield.isID || dbdfield.name == "ID"))
 				{
 					field.IsIndex = true;
 					field.NonInline = dbdfield.isNonInline;
@@ -160,8 +165,8 @@ namespace WDBXEditor.Storage
 				if (dbdfield.isRelation && dbdfield.name == "Ui_order")
 				{
 					field.IsIndex = false;
-                    field.Relationship = dbdfield.isRelation;
-                }
+					field.Relationship = dbdfield.isRelation;
+				}
 
                 field.Name = formatFieldName(dbdfield.name);
 				field.Type = DBDTypeToWDBXType(dbdef.columnDefinitions[dbdfield.name].type, dbdfield.size);
