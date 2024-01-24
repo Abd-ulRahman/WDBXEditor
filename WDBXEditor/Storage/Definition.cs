@@ -152,30 +152,32 @@ namespace WDBXEditor.Storage
 					field.ArraySize = dbdfield.arrLength;
 				}
 
-
 				if (!dbdfield.isNonInline && (dbdfield.isID || dbdfield.name == "ID"))
 				{
 					field.IsIndex = true;
 				}
 				if (dbdfield.isNonInline && (dbdfield.isID || dbdfield.name == "ID"))
-				{
-					field.IsIndex = true;
-					field.NonInline = dbdfield.isNonInline;
-				}
-				if (dbdfield.isRelation && dbdfield.name == "Ui_order")
+                {
+                    field.IsIndex = true;
+                    field.NonInline = dbdfield.isNonInline;
+                }
+                if (dbdfield.isRelation && dbdfield.name == "Ui_order")
 				{
 					field.IsIndex = false;
-					field.Relationship = dbdfield.isRelation;
-				}
-
-                field.Name = formatFieldName(dbdfield.name);
-				field.Type = DBDTypeToWDBXType(dbdef.columnDefinitions[dbdfield.name].type, dbdfield.size);
+                    field.Relationship = dbdfield.isRelation;
+                }
 
                 if (dbdfield.isNonInline && dbdfield.isRelation)
                 {
                     field.Relationship = dbdfield.isRelation;
                     field.NonInline = dbdfield.isNonInline;
                 }
+
+                field.Name = formatFieldName(dbdfield.name);
+				field.Type = DBDTypeToWDBXType(dbdef.columnDefinitions[dbdfield.name].type, dbdfield.size);
+
+                if (field.AutoGenerate && !field.IsIndex)
+                    continue; // skip relationship data columns but keep parent columns
 
                 table.Fields.Add(field);
 			}
@@ -185,10 +187,10 @@ namespace WDBXEditor.Storage
 			{
 				Field autoGenerate = new Field()
 				{
-					Name = "ID",
+				//	Name = "ID",
 					AutoGenerate = true,
 					IsIndex = true,
-					Type = "int"
+				//	Type = "int"
 				};
 
 				table.Fields.Insert(0, autoGenerate);
