@@ -157,29 +157,29 @@ namespace WDBXEditor.Storage
 					field.IsIndex = true;
 				}
 				if (dbdfield.isNonInline && (dbdfield.isID || dbdfield.name == "ID"))
-                {
-                    field.IsIndex = true;
-                    field.NonInline = dbdfield.isNonInline;
-                }
-                if (dbdfield.isRelation && dbdfield.name == "Ui_order")
+				{
+					field.IsIndex = true;
+					field.NonInline = dbdfield.isNonInline;
+				}
+				if (dbdfield.isRelation && dbdfield.name == "Ui_order")
 				{
 					field.IsIndex = false;
-                    field.Relationship = dbdfield.isRelation;
-                }
+					field.Relationship = dbdfield.isRelation;
+				}
 
-                if (dbdfield.isNonInline && dbdfield.isRelation)
-                {
-                    field.Relationship = dbdfield.isRelation;
-                    field.NonInline = dbdfield.isNonInline;
-                }
+				if (dbdfield.isNonInline && dbdfield.isRelation)
+				{
+					field.Relationship = dbdfield.isRelation;
+					field.NonInline = dbdfield.isNonInline;
+				}
 
-                field.Name = formatFieldName(dbdfield.name);
+				field.Name = formatFieldName(dbdfield.name);
 				field.Type = DBDTypeToWDBXType(dbdef.columnDefinitions[dbdfield.name].type, dbdfield.size);
 
-                if (field.AutoGenerate && !field.IsIndex)
-                    continue; // skip relationship data columns but keep parent columns
+				if (field.AutoGenerate && !field.IsIndex)
+					continue; // skip relationship data columns but keep parent columns
 
-                table.Fields.Add(field);
+				table.Fields.Add(field);
 			}
 
 			// WDBX requires an ID column
@@ -256,7 +256,7 @@ namespace WDBXEditor.Storage
 		public void Load()
 		{
 			Key = Fields.FirstOrDefault(x => x.IsIndex);  // LastOrDefault not FirstOrDefault
-            BuildText = BuildText(Build);
+			BuildText = BuildText(Build);
 		}
 	}
 
