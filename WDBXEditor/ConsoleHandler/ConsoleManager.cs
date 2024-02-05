@@ -87,7 +87,7 @@ namespace WDBXEditor.ConsoleHandler
                     CommandHandlers.Remove(k);
         }
 
-        [ConsoleHelp("Restart the Console version of the program Typing any thing else than Existing Commands will start GUI", "", "")]
+        [ConsoleHelp("Restart the Console version of the program Typing any thing else than Existing Commands or just press enter to start GUI", "", "")]
         private static void Restart_Console(string[] args)
         {
             Process.Start(System.Windows.Forms.Application.ExecutablePath);
